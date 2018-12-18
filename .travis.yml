@@ -31,7 +31,7 @@ install:
 before_script:
     - export PATH=`pwd`:$PATH
 
-script: ./bioconductor-scater-scripts-post-install-tests.sh
+script: ./dropletutils-scripts-post-install-tests.sh
 
 cache:
   directories:

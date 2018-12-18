@@ -26,7 +26,7 @@ This downloads test data and executes all of the scripts described below.
 
 Currently available scripts are detailed below, each of which has usage instructions available via --help.
 
-### dropletutils-read-10-counts.R: call Read10xCounts()
+### dropletutils-read-10x-counts.R: call Read10xCounts()
 
 To read 10x data and create a SingleCellExperiment object comprising sparse matrices:
 
@@ -34,7 +34,7 @@ To read 10x data and create a SingleCellExperiment object comprising sparse matr
 dropletutils-read-10-countsx.R -s <comma-separated list of 10x directories> -c <logical, should columns be named by barcode?> -o <file to store serialized SingleCellExperiment object>
 ```
 
-### dropletutils-downsample-matrix.R: call downSampleMatrix()
+### dropletutils-downsample-matrix.R: call downsampleMatrix()
 
 ```
 dropletutils-downsample-matrix.R -i <input SingleCellExperiment in .rds format> -p <single proportion or file with one value per line for each matrix column> -c <logical, should downsampling be done by column?> -o <file to store serialized SingleCellExperiment object>

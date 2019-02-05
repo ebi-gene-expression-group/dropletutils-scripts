@@ -35,7 +35,7 @@ option_list = list(
     default = 'sce',
     type = 'character',
     callback = wsc_choose_from,
-    callback_args = c('sce', 'loom'),
+    callback_args = list(c('sce', 'loom')),
     help = "File format in which to store serialized SingleCellExperiment object. Choose from 'sce' or 'loom'. Default is 'sce'"
   )
 )

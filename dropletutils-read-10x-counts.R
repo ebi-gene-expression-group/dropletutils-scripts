@@ -28,6 +28,15 @@ option_list = list(
     default = NA,
     type = 'character',
     help = "File name in which to store serialized SingleCellExperiment object."
+  ),
+  make_option(
+    c("-F", "--output-object-format"),
+    action = "callback",
+    default = 'sce',
+    type = 'character',
+    callback = wsc_choose_from,
+    callback_args = c('sce', 'loom'),
+    help = "File format in which to store serialized SingleCellExperiment object. Choose from 'sce' or 'loom'. Default is 'sce'"
   )
 )
 
@@ -57,4 +66,10 @@ sep = '\n')
 
 # Output to a serialized R object
 
-saveRDS(single_cell_experiment, file = opt$output_object_file)
+if (opt$output_object_format is 'sce') {
+    saveRDS(single_cell_experiment, file = opt$output_object_file)
+} else {
+    suppressPackageStartupMessages(library(LoomExperiment))
+    scle <- SingleCellLoomExperiment(single_cell_experiment)
+    export(scle, opt$output_object_file)
+}

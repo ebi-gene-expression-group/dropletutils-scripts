@@ -66,10 +66,11 @@ sep = '\n')
 
 # Output to a serialized R object
 
-if (opt$output_object_format is 'sce') {
+if (opt$output_object_format == 'sce') {
     saveRDS(single_cell_experiment, file = opt$output_object_file)
 } else {
     suppressPackageStartupMessages(library(LoomExperiment))
     scle <- SingleCellLoomExperiment(single_cell_experiment)
+    assay(scle) <- DelayedArray(assary(scle))
     export(scle, opt$output_object_file)
 }

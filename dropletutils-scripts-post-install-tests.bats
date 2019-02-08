@@ -32,7 +32,7 @@
 
 # Create the Matrix object in loom format
 
-@test "SingleCellExperiment object creation from 10x" {
+@test "Loom object creation from 10x" {
     if [ "$use_existing_outputs" = 'true' ] && [ -f "$raw_loom_object" ]; then
         skip "$raw_loom_object exists and use_existing_outputs is set to 'true'"
     fi

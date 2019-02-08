@@ -69,6 +69,7 @@ if (opt$output_object_format == 'sce') {
 } else {
     suppressPackageStartupMessages(library(LoomExperiment))
     scle <- SingleCellLoomExperiment(single_cell_experiment)
-    assay(scle) <- DelayedArray(assary(scle))
+    assay(scle) <- DelayedArray(assay(scle))
+    if (file.exists(opt$output_object_file)) file.remove(opt$output_object_file)
     export(scle, opt$output_object_file)
 }

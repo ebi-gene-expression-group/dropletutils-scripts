@@ -103,18 +103,17 @@ nonreport_params <- c('input_object_file', 'output_object_file', 'help', 'output
 opt_table <- data.frame(value=unlist(opt), stringsAsFactors = FALSE)
 opt_table <- opt_table[! rownames(opt_table) %in% nonreport_params, , drop = FALSE]
 
-is.cell <- empty$FDR <= opt$filter_fdr
+is.cell <- empty$FDR <= opt$filter_fdr & ! is.na(empty$FDR)
 cat(c(
   paste0(
-    'At an FDR of 0.01, estimate that ',
-    sum(!is.cell, na.rm = TRUE),
-    ' barcodes have no cells.'
+    'At an FDR of ', opt$filter_fdr,', estimate that ',
+    sum(is.cell, na.rm = TRUE),
+    ' barcodes have cells.'
   ),
   ifelse( opt$filter_empty, paste("Will filter to",  sum(is.cell, na.rm = TRUE), 'barcodes.'), ''),
   '\nParameter values:',
   capture.output(print(opt_table))
 ), sep = '\n')     
-
 
 # Output a tsv
 
@@ -124,6 +123,13 @@ write.table(cbind(Barcode=rownames(empty), empty), file = opt$output_text_file, 
 
 colnames(empty) <- paste0('empty', colnames(empty))
 colData(single_cell_experiment)[,colnames(empty)] <- empty
+
+# Filter empty cells if specified
+
+if (opt$filter_empty){
+    nonempty_cells <- rownames(empty)[is.cell]
+    single_cell_experiment <- single_cell_experiment[, nonempty_cells]
+}
 
 # Re-save the object
 

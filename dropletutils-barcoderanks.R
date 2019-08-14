@@ -89,8 +89,8 @@ plot(
 )
 o <- order(br.out$rank)
 lines(br.out$rank[o], br.out$fitted[o], col = "red")
-abline(h = br.out$knee, col = "dodgerblue", lty = 2)
-abline(h = br.out$inflection,
+abline(h = metadata(br.out)$knee, col = "dodgerblue", lty = 2)
+abline(h = metadata(br.out)$inflection,
        col = "forestgreen",
        lty = 2)
 legend(

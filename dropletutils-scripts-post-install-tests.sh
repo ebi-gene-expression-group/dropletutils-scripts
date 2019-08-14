@@ -69,6 +69,7 @@ export raw_matrix="$data_dir/matrix.mtx"
 export samples="$data_dir"
 export col_names=TRUE
 export raw_sce_object="$output_dir/raw_sce.rds"
+export raw_loom_object="$output_dir/raw_sce.loom"
 export down_sce_object="$output_dir/down_sce.rds"
 export down_prop=0.5
 export down_bycol=FALSE

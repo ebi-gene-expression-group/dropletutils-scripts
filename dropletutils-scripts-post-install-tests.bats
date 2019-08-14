@@ -30,6 +30,21 @@
     [ -f  "$raw_sce_object" ]
 }
 
+# Create the Matrix object in loom format
+
+@test "Loom object creation from 10x" {
+    if [ "$use_existing_outputs" = 'true' ] && [ -f "$raw_loom_object" ]; then
+        skip "$raw_loom_object exists and use_existing_outputs is set to 'true'"
+    fi
+    
+    run rm -f $raw_loom_object && dropletutils-read-10x-counts.R -s $samples -c $col_names -o $raw_loom_object -F loom
+    echo "status = ${status}"
+    echo "output = ${output}"
+    
+    [ "$status" -eq 0 ]
+    [ -f  "$raw_loom_object" ]
+}
+
 # Downsample the Matrix object
 
 @test "Downsample counts in a SingleCellExperiment" {

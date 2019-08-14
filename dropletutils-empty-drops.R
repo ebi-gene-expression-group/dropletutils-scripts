@@ -90,9 +90,15 @@ suppressPackageStartupMessages(require(DropletUtils))
 
 single_cell_experiment <- readRDS(opt$input_object_file)
 
-# Run the function and make sure output ordering matches input
+# Run the function. Functions used internally by emptyDrops (see e.g.
+# edgeR::goodTuringProportions() expect integers, and emptyDrops will no work
+# correctly with non-integers from e.g. Alevin et al, so we test with integers
+# only. 
 
-empty <- emptyDrops(counts(single_cell_experiment), lower=opt$lower, niters=opt$niters, test.ambient = opt$test_ambient, ignore = opt$ignore, retain = opt$retain)[colnames(single_cell_experiment),]
+testmat <- counts(single_cell_experiment)
+testmat@x <- round(testmat@x)
+
+empty <- emptyDrops(testmat, lower=opt$lower, niters=opt$niters, test.ambient = opt$test_ambient, ignore = opt$ignore, retain = opt$retain)
 
 # Report to STDOUT on likely empty cells
 

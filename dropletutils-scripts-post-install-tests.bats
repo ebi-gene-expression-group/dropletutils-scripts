@@ -15,6 +15,21 @@
     [ -f  "$raw_matrix" ]
 }
 
+# create an sdrf file to incorporate into SCE object 
+@test "fetch a dummy sdrf for testing" {
+    if [ "$use_existing_outputs" = 'true' ] && [ -f "$test_sdrf" ]; then
+        skip "$test_sdrf exists and use_existing_outputs is set to 'true'"
+    fi
+
+    run rm -rf $test_sdrf && dropletutils-make-test-sdrf.R -b $barcodes -o $test_sdrf
+    echo "status = ${status}"
+    echo "output = ${output}"
+ 
+    [ "$status" -eq 0 ]
+    [ -f  "$test_sdrf" ]
+}
+
+
 # Create the Matrix object
 
 @test "SingleCellExperiment object creation from 10x" {
@@ -22,7 +37,13 @@
         skip "$raw_sce_object exists and use_existing_outputs is set to 'true'"
     fi
     
-    run rm -f $raw_sce_object && dropletutils-read-10x-counts.R -s $samples -c $col_names -o $raw_sce_object
+    run rm -f $raw_sce_object && dropletutils-read-10x-counts.R\
+                                                -s $samples\
+                                                -c $col_names\
+                                                -o $raw_sce_object\
+                                                -m $test_sdrf\
+                                                --cell-id-column $cell_id_column
+
     echo "status = ${status}"
     echo "output = ${output}"
     

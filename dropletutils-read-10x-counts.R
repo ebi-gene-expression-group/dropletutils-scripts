@@ -78,6 +78,7 @@ single_cell_experiment <- read10xCounts( samples = samples, col.names = opt$col_
 # metadata file logic 
 if(!is.na(opt$metadata_files)){
   metadata_files = wsc_split_string(opt$metadata_files)
+
   # check cell id column is provided
   if(is.na(opt$cell_id_column)){
     stop("Cell id column name for SDRF files is not provided. ")
@@ -85,6 +86,7 @@ if(!is.na(opt$metadata_files)){
   metadata = lapply(metadata_files, function(x) read.csv(x, sep="\t"))
   common_names = Reduce(intersect, lapply(metadata, colnames))
   metadata = do.call(rbind, lapply(metadata, function(x) x[,common_names]))
+
   # remove technical duplicate rows
   metadata = metadata[which(!duplicated(metadata[, opt$cell_id_column])), ]
 
@@ -98,18 +100,15 @@ if(!is.na(opt$metadata_files)){
     metadata = metadata[, metadata_columns]
   }
 
-  # match metadata file to the matrix object
-  barcodes = colData(single_cell_experiment)$Barcode
-  # subset metadata file to only include cells that are found in the matrix 
-  #metadata = metadata[which(metadata[, opt$cell_id_column] %in% intersect(metadata[, opt$cell_id_column], barcodes)), ]
-
-  # check for correct match
-  if(!all(metadata[[opt$cell_id_column]] %in% colData(single_cell_experiment)$Barcode)){
+  # Check that all the cells have annotations
+  if (! all(colData(single_cell_experiment)$Barcode %in% metadata[[opt$cell_id_column]])){
     stop("Error in matching metadata to expression matrix columns.")
+  }else{
+    savednames <- rownames(colData(single_cell_experiment))
+    colData(single_cell_experiment) <- merge(colData(single_cell_experiment), metadata, by.x = 'Barcode', by.y = opt$cell_id_column, sort = FALSE)
+    rownames(colData(single_cell_experiment)) <- savednames
   }
-  # add metadata to SCE object
-  #colData(single_cell_experiment) = cbind(colData(single_cell_experiment), DataFrame(metadata)) 
-  colData(single_cell_experiment) = merge(colData(single_cell_experiment), metadata, by.x = 'Barcode', by.y = opt$cell_id_column, sort = FALSE)
+
 }
 
 # Print object summary

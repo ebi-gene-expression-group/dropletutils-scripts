@@ -21,7 +21,7 @@ option_list = list(
             names when type='auto'."
   ),
   make_option(
-    c("-c", "--col-names"),
+    c("-n", "--col-names"),
     action = "store",
     default = FALSE,
     type = 'logical',
@@ -39,7 +39,7 @@ option_list = list(
             and correspond to the matrix data."
   ),
   make_option(
-    c("--metadata-columns"),
+    c("-c", "--metadata-columns"),
     action = "store",
     default = NA,
     type = "character",
@@ -47,7 +47,7 @@ option_list = list(
             added to the SCE object. By default, all columns are kept."
   ),
   make_option(
-    c("--cell-id-column"),
+    c("-b", "--cell-id-column"),
     action = "store",
     default = NA, 
     type = "character", 

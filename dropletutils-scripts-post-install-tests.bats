@@ -39,7 +39,7 @@
     
     run rm -f $raw_sce_object && dropletutils-read-10x-counts.R\
                                                 -s $samples\
-                                                -c $col_names\
+                                                -n $col_names\
                                                 -o $raw_sce_object\
                                                 -m $test_sdrf\
                                                 --cell-id-column $cell_id_column

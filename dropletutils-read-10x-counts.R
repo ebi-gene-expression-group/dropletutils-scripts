@@ -83,7 +83,8 @@ if(!is.na(opt$metadata_files)){
     stop("Cell id column name for SDRF files is not provided. ")
   }
   metadata = lapply(metadata_files, function(x) read.csv(x, sep="\t"))
-  metadata = do.call(rbind, metadata)
+  common_names = Reduce(intersect, lapply(metadata, colnames))
+  metadata = do.call(rbind, lapply(metadata, function(x) x[,common_names]))
   # remove technical duplicate rows
   metadata = metadata[which(!duplicated(metadata[, opt$cell_id_column])), ]
 
@@ -100,14 +101,15 @@ if(!is.na(opt$metadata_files)){
   # match metadata file to the matrix object
   barcodes = colData(single_cell_experiment)$Barcode
   # subset metadata file to only include cells that are found in the matrix 
-  metadata = metadata[which(metadata[, opt$cell_id_column] %in% intersect(metadata[, opt$cell_id_column], barcodes)), ]
+  #metadata = metadata[which(metadata[, opt$cell_id_column] %in% intersect(metadata[, opt$cell_id_column], barcodes)), ]
 
   # check for correct match
-  if(nrow(metadata)==0 || !setequal(metadata[, opt$cell_id_column], barcodes)){
+  if(!all(metadata[[opt$cell_id_column]] %in% colData(single_cell_experiment)$Barcode)){
     stop("Error in matching metadata to expression matrix columns.")
   }
   # add metadata to SCE object
-  colData(single_cell_experiment) = cbind(colData(single_cell_experiment), DataFrame(metadata)) 
+  #colData(single_cell_experiment) = cbind(colData(single_cell_experiment), DataFrame(metadata)) 
+  colData(single_cell_experiment) = merge(colData(single_cell_experiment), metadata, by.x = 'Barcode', by.y = opt$cell_id_column, sort = FALSE)
 }
 
 # Print object summary

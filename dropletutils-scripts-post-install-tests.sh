@@ -66,6 +66,9 @@ fi
 ################################################################################
 
 export raw_matrix="$data_dir/matrix.mtx"
+export barcodes="$data_dir/barcodes.tsv"
+export test_sdrf="$output_dir/test_sdrf.txt"
+export cell_id_column="barcode"
 export samples="$data_dir"
 export col_names=TRUE
 export raw_sce_object="$output_dir/raw_sce.rds"

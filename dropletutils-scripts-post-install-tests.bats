@@ -15,8 +15,8 @@
     [ -f  "$raw_matrix" ]
 }
 
-# create an sdrf file to incorporate into SCE object 
-@test "fetch a dummy sdrf for testing" {
+# create an metadata file to incorporate into SCE object 
+@test "fetch a dummy file for testing" {
     if [ "$use_existing_outputs" = 'true' ] && [ -f "$test_sdrf" ]; then
         skip "$test_sdrf exists and use_existing_outputs is set to 'true'"
     fi
@@ -32,6 +32,23 @@
 
 # Create the Matrix object
 
+# no metadata functionality 
+@test "SCE object from 10x, no metadata" {
+    if [ "$use_existing_outputs" = 'true' ] && [ -f "$raw_sce_object" ]; then
+        skip "$raw_sce_object exists and use_existing_outputs is set to 'true'"
+    fi
+    
+    run rm -f $raw_sce_object && dropletutils-read-10x-counts.R\
+                                                -s $samples\
+                                                -o $raw_sce_object
+    echo "status = ${status}"
+    echo "output = ${output}"
+    
+    [ "$status" -eq 0 ]
+    [ -f  "$raw_sce_object" ]
+}
+
+# test metadata logic 
 @test "SingleCellExperiment object creation from 10x" {
     if [ "$use_existing_outputs" = 'true' ] && [ -f "$raw_sce_object" ]; then
         skip "$raw_sce_object exists and use_existing_outputs is set to 'true'"
@@ -50,6 +67,7 @@
     [ "$status" -eq 0 ]
     [ -f  "$raw_sce_object" ]
 }
+
 
 # Downsample the Matrix object
 

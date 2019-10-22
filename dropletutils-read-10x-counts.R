@@ -33,9 +33,9 @@ option_list = list(
     action = "store",
     default = NA, 
     type = 'character',
-    help = "A comma-separated list containing one or more paths to the SDRF 
+    help = "A comma-separated list containing one or more paths to 
             metadata files in .txt format, e.g. with cell type annotations.
-            Note that field names and gene ids must be consistent across the files 
+            Note that gene ids must be consistent across the files 
             and correspond to the matrix data."
   ),
   make_option(
@@ -51,9 +51,9 @@ option_list = list(
     action = "store",
     default = NA, 
     type = "character", 
-    help = "Name of the SDRF file column that corresponds to the unique identifier
+    help = "Name of the metadata file column that corresponds to the unique identifier
             of each cell in the dataset (e.g. barcode). Must correspond to column names in
-            the 10X directory (make sure the --col-names option is set to TRUE)."
+            the 10X directory."
   ),
   make_option(
     c("-o", "--output-object-file"),
@@ -81,7 +81,7 @@ if(!is.na(opt$metadata_files)){
 
   # check cell id column is provided
   if(is.na(opt$cell_id_column)){
-    stop("Cell id column name for SDRF files is not provided. ")
+    stop("Cell id column name for metadata files is not provided.")
   }
   metadata = lapply(metadata_files, function(x) read.csv(x, sep="\t"))
   common_names = Reduce(intersect, lapply(metadata, colnames))
@@ -108,7 +108,6 @@ if(!is.na(opt$metadata_files)){
     colData(single_cell_experiment) <- merge(colData(single_cell_experiment), metadata, by.x = 'Barcode', by.y = opt$cell_id_column, sort = FALSE)
     rownames(colData(single_cell_experiment)) <- savednames
   }
-
 }
 
 # Print object summary

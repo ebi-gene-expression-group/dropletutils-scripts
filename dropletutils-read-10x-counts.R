@@ -21,7 +21,7 @@ option_list = list(
             names when type='auto'."
   ),
   make_option(
-    c("-n", "--col-names"),
+    c("-c", "--col-names"),
     action = "store",
     default = FALSE,
     type = 'logical',
@@ -39,7 +39,7 @@ option_list = list(
             and correspond to the matrix data."
   ),
   make_option(
-    c("-c", "--metadata-columns"),
+    c("-f", "--metadata-columns"),
     action = "store",
     default = NA,
     type = "character",

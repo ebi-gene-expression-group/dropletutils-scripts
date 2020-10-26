@@ -83,7 +83,14 @@ if(!is.na(opt$metadata_files)){
   if(is.na(opt$cell_id_column)){
     stop("Cell id column name for metadata files is not provided.")
   }
-  metadata = lapply(metadata_files, function(x) read.csv(x, sep="\t"))
+  metadata = lapply(metadata_files, function(x) {
+    read.csv(
+      x,
+      sep = "\t",
+      check.names = FALSE,
+      stringsAsFactors = FALSE
+    )
+  })
   common_names = Reduce(intersect, lapply(metadata, colnames))
   metadata = do.call(rbind, lapply(metadata, function(x) x[,common_names]))
 

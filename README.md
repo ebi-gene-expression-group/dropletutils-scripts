@@ -31,7 +31,7 @@ Currently available scripts are detailed below, each of which has usage instruct
 To read 10x data and create a SingleCellExperiment object comprising sparse matrices:
 
 ```
-dropletutils-read-10-countsx.R -s <comma-separated list of 10x directories> -c <logical, should columns be named by barcode?> -o <file to store serialized SingleCellExperiment object>
+dropletutils-read-10x-counts.R -s <comma-separated list of 10x directories> -c <logical, should columns be named by barcode?> -o <file to store serialized SingleCellExperiment object>
 ```
 
 ### dropletutils-downsample-matrix.R: call downsampleMatrix()
